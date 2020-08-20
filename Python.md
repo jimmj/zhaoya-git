@@ -1,14 +1,10 @@
-
-
-
-
 ## 字符串和变量
 
 ### 数据类型
 
 #### 整数
 
-Python可以处理任意大小的整数，当然包括负整数，在程序中的表示方法和数学上的写法一模一样；十六进制用```0x```前缀和0-9，a-f表示
+**Python可以处理任意大小的整数，当然包括负整数，在程序中的表示方法和数学上的写法一模一样；十六进制用```0x```前缀和0-9，a-f表示**
 
 #### 浮点数【小数】
 
@@ -1343,5 +1339,53 @@ t = threading.Thread(target=loop, name='LoopThread')
 t.start()
 t.join()
 print('thread %s ended.' % threading.current_thread().name)
+```
+
+### 线程锁
+
+* **多线程中，所有变量都由所有线程共享，所以，任何一个变量都可以被任何一个线程修改**
+
+```python
+balance = 0
+lock = threading.Lock()
+
+def run_thread(n):
+    for i in range(100000):
+        # 先要获取锁:
+        lock.acquire()
+        try:
+            # 放心地改吧:
+            change_it(n)
+        finally:
+            # 改完了一定要释放锁:
+            lock.release()
+```
+
+### TreadLocal
+
+* **一个`ThreadLocal`变量虽然是全局变量，但每个线程都只能读写自己线程的独立副本，互不干扰。`ThreadLocal`解决了参数在一个线程中各个函数之间互相传递的问题**
+
+```python
+import threading
+    
+# 创建全局ThreadLocal对象:
+local_school = threading.local()
+
+def process_student():
+    # 获取当前线程关联的student:
+    std = local_school.student
+    print('Hello, %s (in %s)' % (std, threading.current_thread().name))
+
+def process_thread(name):
+    # 绑定ThreadLocal的student:
+    local_school.student = name
+    process_student()
+
+t1 = threading.Thread(target= process_thread, args=('Alice',), name='Thread-A')
+t2 = threading.Thread(target= process_thread, args=('Bob',), name='Thread-B')
+t1.start()
+t2.start()
+t1.join()
+t2.join()
 ```
 
