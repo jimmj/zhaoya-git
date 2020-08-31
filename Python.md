@@ -1389,3 +1389,15 @@ t1.join()
 t2.join()
 ```
 
+## 常用内键模块
+
+- `datetime`
+- `nametuple`
+- `deque`
+- `defaultdict`
+- `OrderedDict`
+- `hashlib`
+- `hmac`
+- `itertools`模块
+- `urllib`模块
+- 
