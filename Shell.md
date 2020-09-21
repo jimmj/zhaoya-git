@@ -145,4 +145,7 @@ lengthn=${#array_name[n]}
 
 > **如果包含空格，应该使用单引号或者双引号将该参数括起来，以便于脚本将这个参数作为整体来接收**
 
-- **Shell脚本中中括号的用法[链接](https://www.runoob.com/w3cnote/shell-summary-brackets.html)**
+- **<>Shell脚本中中括号的用法[链接]</h>>(https://www.runoob.com/w3cnote/shell-summary-brackets.html)**
+
+## Shell运算符
+
