@@ -145,7 +145,260 @@ lengthn=${#array_name[n]}
 
 > **如果包含空格，应该使用单引号或者双引号将该参数括起来，以便于脚本将这个参数作为整体来接收**
 
-- **<>Shell脚本中中括号的用法[链接]</h>>(https://www.runoob.com/w3cnote/shell-summary-brackets.html)**
+- **<u>Shell脚本中中括号的用法</u>[链接](https://www.runoob.com/w3cnote/shell-summary-brackets.html)**
 
 ## Shell运算符
+
+- 算术运算符
+
+| 运算符 | 说明 |      举例       |
+| :----: | :--: | :-------------: |
+|   +    | 加法 | `expr $a + $b`  |
+|   -    | 减法 | `expr $a - $b`  |
+|   *    | 乘法 | `expr $a \* $b` |
+|   /    | 除法 | `expr $a / $b`  |
+|   %    | 取余 | `expr $a % $b`  |
+
+- 字符串运算符
+
+| 运算符 | 说明 | 举例 |
+| :------: | :----: | :----: |
+| = | 检测两个字符串是否相等，相等返回true | `[[ $a = $b ]]` |
+| != | 检测两个字符串是否相等，不相等返回true | `[[ $a = $b ]]` |
+| -z | 检测字符串长度是否为0，为0返回true | `[[ -z $a ]]` |
+| -n | 检测字符串长度是否不为0，不为0返回true | `[[ -n $a ]]` |
+| $ | 检测字符串是否为空，为空返回true | `[[ $a ]]` |
+
+## Shell printf命令
+
+```shell
+#test.sh
+#!/bin/bash
+
+printf "%-10s %-8s %-4s\n" 姓名 性别 体重kg
+printf "%-10s %-8s %-4.2f\n" 郭靖 男 66.1234
+printf "%-10s %-8s %-4.2f\n" 杨过 男 48.6543
+printf "%-10s %-8s %-4.2f\n" 郭芙 女 47.9876
+
+zhaoya@zhaoya:~/test$ ./test.sh 
+姓名     性别   体重kg
+郭靖     男      66.12
+杨过     男      48.65
+郭芙     女      47.99
+```
+
+- **%-10s 指一个宽度为10个字符（-表示左对齐，没有则表示右对齐），任何字符都会被显示在10个字符宽的字符内，如果不足则自动以空格填充，超过也会将内容全部显示出来**
+- **%-4.2f 指格式化为小数，其中.2指保留2位小数**
+
+## Shell 流程控制
+
+### if else
+
+- **语法格式**
+
+```shell
+if condition
+then
+    command1 
+    command2
+    ...
+    commandN 
+fi
+#或
+if condition
+then
+    command1 
+    command2
+    ...
+    commandN
+else
+    command
+fi
+#嵌套
+if condition1
+then
+    command1
+elif condition2 
+then 
+    command2
+else
+    commandN
+fi
+```
+
+### for循环
+
+- **语法格式**
+
+```shell
+for var in item1 item2 ... itemN
+do
+    command1
+    command2
+    ...
+    commandN
+done
+```
+
+### while循环
+
+- **语法格式**
+
+```shell
+while condition
+do
+    command
+done
+```
+
+```shell
+#!/bin/bash
+int=1
+while(( $int<=5 ))
+do
+    echo $int
+    let "int++"
+done
+```
+
+### until循环
+
+> - **until 循环执行一系列命令直至条件为 true 时停止**
+>
+> - **until 循环与 while 循环在处理方式上刚好相反，一般 while 循环优于 until 循环，但在某些时候—也只是极少数情况下，until 循环更加有用**
+
+- **语法格式**
+
+```shell
+until condition
+do
+    command
+done
+```
+
+- **condition 一般为条件表达式，如果返回值为 false，则继续执行循环体内的语句，否则跳出循环**
+
+### case
+
+> **Shell case语句为多选择语句。可以用case语句匹配一个值与一个模式，如果匹配成功，执行相匹配的命令**
+
+- **语法格式**
+
+```shell
+case 值 in
+模式1)
+    command1
+    command2
+    ...
+    commandN
+    ;;
+模式2）
+    command1
+    command2
+    ...
+    commandN
+    ;;
+esac
+# 或
+case 值 in
+模式1)
+    command1
+    command2
+    command3
+    ;;
+模式2）
+    command1
+    command2
+    command3
+    ;;
+*)
+    command1
+    command2
+    command3
+    ;;
+esac
+```
+
+```shell
+#!/bin/bash
+
+echo '输入 1 到 4 之间的数字:'
+echo '你输入的数字为:'
+read aNum
+case $aNum in
+    1)  echo '你选择了 1'
+    ;;
+    2)  echo '你选择了 2'
+    ;;
+    3)  echo '你选择了 3'
+    ;;
+    4)  echo '你选择了 4'
+    ;;
+    *)  echo '你没有输入 1 到 4 之间的数字'
+    ;;
+esac
+```
+
+### break
+
+```shell
+#!/bin/bash
+while :
+do
+    echo -n "输入 1 到 5 之间的数字:"
+    read aNum
+    case $aNum in
+        1|2|3|4|5) echo "你输入的数字为 $aNum!"
+        ;;
+        *) echo "你输入的数字不是 1 到 5 之间的! 游戏结束"
+            break
+        ;;
+    esac
+done
+```
+
+### continue
+
+```shell
+#!/bin/bash
+while :
+do
+    echo -n "输入 1 到 5 之间的数字: "
+    read aNum
+    case $aNum in
+        1|2|3|4|5) echo "你输入的数字为 $aNum!"
+        ;;
+        *) echo "你输入的数字不是 1 到 5 之间的!"
+            continue
+            echo "游戏结束"
+        ;;
+    esac
+done
+```
+
+## Shell 函数
+
+```shell
+#!/bin/bash
+
+demoFun(){
+    echo "这是我的第一个 shell 函数!"
+}
+echo "-----函数开始执行-----"
+demoFun
+echo "-----函数执行完毕-----"
+
+#  带有return语句的函数
+funWithReturn(){
+    echo "这个函数会对输入的两个数字进行相加运算..."
+    echo "输入第一个数字: "
+    read aNum
+    echo "输入第二个数字: "
+    read anotherNum
+    echo "两个数字分别为 $aNum 和 $anotherNum !"
+    return $(($aNum+$anotherNum))
+}
+funWithReturn
+echo "输入的两个数字之和为 $? !"
+```
 
