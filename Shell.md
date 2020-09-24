@@ -402,3 +402,37 @@ funWithReturn
 echo "输入的两个数字之和为 $? !"
 ```
 
+## Shell 重定向
+
+| 命令         | 说明                 |
+| ------------ | -------------------- |
+| 命令 > file  | 输出重定向到file文件 |
+| 命令< file   | 输入重定向到file     |
+| 命令 >> file | 将输出追加到file文件 |
+
+## Shell 文件包含
+
+- 格式
+
+**test.sh文件**
+
+```shell
+#!/bin/bash
+
+url="http://www.runoob.com"
+```
+
+**test2.sh文件**
+
+```shell
+#!/bin/bash
+
+#使用 . 号来引用test1.sh 文件
+. ./test1.sh
+
+# 或者使用以下包含文件代码
+# source ./test1.sh
+
+echo "菜鸟教程官网地址：$url"
+```
+
